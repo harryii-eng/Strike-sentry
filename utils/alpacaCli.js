@@ -5,9 +5,13 @@
 const { execFile } = require('child_process');
 const util = require('util');
 const path = require('path');
+const fs = require('fs');
 const execFileAsync = util.promisify(execFile);
 
 const ALPACA_BIN = process.env.ALPACA_CLI_PATH || path.join(__dirname, '..', 'bin', 'alpaca');
+try {
+  fs.chmodSync(ALPACA_BIN, 0o755);
+} catch (e) {}
 
 function buildOrderArgs(payload) {
   const args = ['order', 'submit', '--quiet'];
